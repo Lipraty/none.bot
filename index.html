@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>None.Bot :: regisrty</title>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+
+<body>
+    <img src="https://nonebot.dev/logo.png" height="25" alt="NoneBot Logo" class="logo">
+    <div class="mask">
+        <div class="content">
+            <h1>None.bot</h1>
+            <h2 id="subject">申请为 NoneBot Plugin 使用一个子域</h2>
+            <button class="btn" id="apply">立即申请</button>
+            <form class="apply-box" style="display: none;">
+                <label for="domain" style="padding-right: 3px;">域名: <input type="text" name="domain" id="domain" pattern="^([a-z0-9\-]+)$"
+                        placeholder="请输入你的二级域" title="仅允许数字、小写字母与 -">.none.bot</label>
+                <label for="ip">IP: <input style="margin-left: 2.05rem; margin-right: 0;" type="text" name="ip" id="ip" placeholder="请输入你的 IP"
+                    pattern="^([01]?\d{1,2}|2[0-4]\d|25[0-5])\.([01]?\d{1,2}|2[0-4]\d|25[0-5])\.([01]?\d{1,2}|2[0-4]\d|25[0-5])\.([01]?\d{1,2}|2[0-4]\d|25[0-5])$"
+                    title="输入正确的 IPv4 地址。"></label> 
+                <!-- <input type="text" name="token" id="token" disabled> -->
+                <input type="submit" value="提交" id="submit">
+            </form>
+        </div>
+        <footer><a href="https://github.com/Lipraty">Lipraty</a>. 2023</footer>
+    </div>
+    <div class="popup" style="display: none;">
+        <div class="card">
+            <div>
+                <h2>注意事项</h2>
+                <p>1. 申请的子域名必须是小写字母、数字与 - 组成</p>
+                <p>2. 该域名仅能用于 nonebot ，如有违反将立即收回</p>
+                <p>3. 申请的域名将会 A 记录解析到你申请的 IP 地址，请确保你的 IP 地址是固定的</p>
+                <p>4. 由于域名未备案，请确保服务器 IP <b>不来自于中国大陆服务商</b></p>
+                <p>5. 经由邮箱申请的域名将会在 15 个工作日内完成审核并生效</p>
+            </div>
+            <div>
+                <p>请阅读 <a href="./termsofservice.html">《使用条款》</a></p>
+            </div>
+            <a class="btn" style="margin-top: 3rem;" id="applyfor"
+                href="mailto:support@none.bot?subject=none.bot 子域名申请&body=我已阅读并同意《使用条款》，现进行域名申请。%0d%0a%0d%0a申请项目名称: %0d%0a申请人联系方式: %0d%0a申请的子域名: [yourdomain].none.bot">申请</a>
+        </div>
+    </div>
+</body>
+<script>
+    const $ = (selector) => document.querySelector(selector);
+    function getParameterByName(name) {
+        const results = new RegExp('[?&]' + name.replace(/[\[\]]/g, '\\$&') + '(=([^&#]*)|&|#|$)').exec(window.location.href);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+    const token = getParameterByName('token');
+    if (token) {
+        // $('#token').value = token;
+        $('#domain').value = getParameterByName('domain');
+        $('#ip').value = getParameterByName('ip');
+        $('#apply').style.display = 'none';
+        $('.apply-box').style.display = 'flex';
+        $('#subject').innerText = '恭喜你已经通过了申请，进行最后一步即可发布你的域名';
+    }
+    window.onload = () => {
+        const logo = $('.logo');
+        const mask = $('.mask');
+        document.onmousemove = (e) => {
+            logo.style.left = e.clientX + 'px';
+            logo.style.top = e.clientY + 'px';
+            logo.style.opacity = '0.5';
+        }
+        document.onmouseleave = (e) => {
+            logo.style.opacity = '0';
+        }
+        $('.popup').onclick = (e) => {
+            if (e.target === $('.popup')) {
+                $('.popup').style.display = 'none';
+            }
+        }
+        $('#apply').onclick = () => {
+            $('.popup').style.display = 'flex';
+        }
+    }
+</script>
+</html>
