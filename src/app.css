@@ -58,7 +58,7 @@ h1 {
   filter: drop-shadow(0 0 2em #3178c6aa);
 }
 
-.card {
+.container {
   padding: 2em;
 }
 
@@ -99,6 +99,7 @@ button:focus-visible {
 }
 
 .ani-logo {
+  position: absolute;
   animation: logo 0.75s ease-out 0.25s infinite alternate-reverse;
 }
 
