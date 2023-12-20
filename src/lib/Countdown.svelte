@@ -6,7 +6,7 @@
     if (countdown > 0) {
       countdown--;
     } else if (countdown === 0) {
-      window.location.href = '//koishi.chat'
+      if (!stop) window.location.href = "//koishi.chat";
       clearInterval(timer);
     }
   }, 1000);

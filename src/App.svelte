@@ -1,15 +1,25 @@
 <script lang="ts">
   import Countdown from "./lib/Countdown.svelte";
-  let stopCountdown = false;
+  let stop = false;
+  let countdown = 10;
   let data: any = {
     domain: "",
     ipaddr: "",
   };
+  const timer = setInterval(() => {
+    if (countdown > 0) {
+      countdown--;
+    } else if (countdown === 0) {
+      window.location.href = "//koishi.chat";
+      clearInterval(timer);
+    }
+  }, 1000);
   const features = [
     {
       text: "申请子域",
       handle() {
-        stopCountdown = true;
+        stop = true
+        clearInterval(timer);
       },
     },
     {
@@ -32,7 +42,7 @@
     },
     {
       name: "IP",
-      style: "margin-left: 2.05rem;",
+      style: "margin-left: 2.05rem; margin-right: 0;",
       pattern:
         "^(?:25[0-5]|2[0-4]d|1dd|[1-9]d|d)(?:.(?:25[0-5]|2[0-4]d|1dd|[1-9]d|d)){3}$",
       placeholder: "请输入你的 IP",
@@ -62,20 +72,22 @@
   <h1>None.Bot</h1>
 
   <div class="container">
-    {#if !stopCountdown}
-      <Countdown stop={stopCountdown} />
+    {#if !stop}
+      <h2>将在 {countdown} 秒后转到 koishi.chat</h2>
     {/if}
     <div class="cards">
       {#each features as item}
         <button on:click={item.handle}>{item.text}</button>
       {/each}
     </div>
-    {#if stopCountdown}
+    {#if stop}
       <form class="apply-box">
         <div class="tiptop">
           <h2 style="margin-top: 0;">注意事项</h2>
           <p>1. 申请的子域名必须是小写字母、数字与 - 组成</p>
-          <p>2. 该域名仅能用于 NoneBot 或 Koishi 相关项目，如有违反将立即收回</p>
+          <p>
+            2. 该域名仅能用于 NoneBot 或 Koishi 相关项目，如有违反将立即收回
+          </p>
           <p>
             3. 申请的域名将会 A 记录解析到你申请的 IP 地址，请确保你的 IP
             地址是固定的
@@ -102,7 +114,9 @@
             {item.$endname || ""}
           </label>
         {/each}
-        <span style="margin-bottom: 1rem;">请阅读 <a href="./termsofservice.html">《使用条款》</a></span>
+        <span style="margin-bottom: 1rem;"
+          >请阅读 <a href="./termsofservice.html">《使用条款》</a></span
+        >
         <button on:click={submit}>申请子域</button>
       </form>
     {/if}
@@ -169,8 +183,8 @@
     outline: none;
     box-shadow: 0 0 10px rgba(96, 37, 90, 0.2);
   }
-  
-  .apply-box .tiptop{
+
+  .apply-box .tiptop {
     text-align: left;
   }
 </style>
