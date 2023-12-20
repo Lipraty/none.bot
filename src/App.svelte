@@ -32,7 +32,7 @@
     },
     {
       name: "IP",
-      style: "margin-left: 2.05rem; margin-right: 0;",
+      style: "margin-left: 2.05rem;",
       pattern:
         "^(?:25[0-5]|2[0-4]d|1dd|[1-9]d|d)(?:.(?:25[0-5]|2[0-4]d|1dd|[1-9]d|d)){3}$",
       placeholder: "请输入你的 IP",
@@ -72,6 +72,19 @@
     </div>
     {#if stopCountdown}
       <form class="apply-box">
+        <div class="tiptop">
+          <h2 style="margin-top: 0;">注意事项</h2>
+          <p>1. 申请的子域名必须是小写字母、数字与 - 组成</p>
+          <p>2. 该域名仅能用于 NoneBot 或 Koishi 相关项目，如有违反将立即收回</p>
+          <p>
+            3. 申请的域名将会 A 记录解析到你申请的 IP 地址，请确保你的 IP
+            地址是固定的
+          </p>
+          <p>
+            4. 由于域名未备案，<b>请确保服务器 IP 不来自于中国大陆服务商</b>
+          </p>
+          <p>5. 经由邮箱申请的域名将会在 15 个工作日内完成审核并生效</p>
+        </div>
         {#each forms as item}
           <label for={item.binding}>
             {item.name}
@@ -89,14 +102,17 @@
             {item.$endname || ""}
           </label>
         {/each}
+        <span style="margin-bottom: 1rem;">请阅读 <a href="./termsofservice.html">《使用条款》</a></span>
         <button on:click={submit}>申请子域</button>
       </form>
     {/if}
   </div>
 
   <p class="read-the-docs">
-    Powered by <a href="//github.com/Lipraty">Lipraty</a> | 本项目非 NoneBot 官方项目，与
-    NoneBot 官方无关。
+    Powered by <a href="//github.com/Lipraty">Lipraty</a> | 本项目非 NoneBot
+    官方项目，与 NoneBot 官方无关。<a href="//github.com/lipraty/none.bot"
+      >GitHub</a
+    >
   </p>
 </main>
 
@@ -139,7 +155,6 @@
     width: auto;
     border: 1px solid #aaa;
     border-radius: 8px;
-    color: rgba(0, 0, 0, 0.2);
     font-size: 1.2rem;
     padding: 0.6rem;
     padding-left: 1.2rem;
@@ -153,5 +168,9 @@
   .apply-box input:focus {
     outline: none;
     box-shadow: 0 0 10px rgba(96, 37, 90, 0.2);
+  }
+  
+  .apply-box .tiptop{
+    text-align: left;
   }
 </style>
