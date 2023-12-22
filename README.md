@@ -1,5 +1,11 @@
 # None.Bot Project
 
+> I will not F*KING maintain this project written in a crap framework like Svelte again.
+> 
+>  **WHY NOT USE VUE?**
+>
+> WHY?????????????
+
 Koishi: [koishi.chat](https://koishi.chat), [GitHub](https://github.com/koishijs)
 
 NoneBot: [nonebot.dev](https://nonebot.dev), [GitHub](https://github.com/nonebot)

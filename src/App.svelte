@@ -1,6 +1,7 @@
 <script lang="ts">
-  import Countdown from "./lib/Countdown.svelte";
+  import Termsofservice from "./lib/Termsofservice.svelte";
   let stop = false;
+  let termsofservice = false;
   let countdown = 10;
   let data: any = {
     domain: "",
@@ -18,7 +19,7 @@
     {
       text: "申请子域",
       handle() {
-        stop = true
+        stop = true;
         clearInterval(timer);
       },
     },
@@ -122,6 +123,14 @@
     {/if}
   </div>
 
+  {#if termsofservice}
+    <div class="popup">
+      <div class="close">X</div>
+      <div class="content"><Termsofservice /></div>
+      <button on:click={()=>{termsofservice = false}}>我已阅读</button>
+    </div>
+  {/if}
+
   <p class="read-the-docs">
     Powered by <a href="//github.com/Lipraty">Lipraty</a> | 本项目非 NoneBot
     官方项目，与 NoneBot 官方无关。<a href="//github.com/lipraty/none.bot"
@@ -186,5 +195,26 @@
 
   .apply-box .tiptop {
     text-align: left;
+  }
+
+  .popup{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    background-color: rgba(29, 29, 29, 0.96);
+    backdrop-filter: blur(32px);
+  }
+
+  .content{
+    max-width: 80%;
+    height: 50vh;
+    overflow-y: scroll;
+    background-color: white;
+    padding: 2rem 2.6rem;
   }
 </style>
