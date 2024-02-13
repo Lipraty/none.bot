@@ -20,7 +20,7 @@ You can make a sub-domain application in the following ways:
 
 - Email to support@none.bot
 - PR this project and change of `subdomain.txt`
-  - `[yoursubdomain].none.bot: [type, A or CNAM or somting]#[content, your ip or domain], [your email]`
+  - `[yoursubdomain].none.bot: [type, A or CNAME or someting]#[content, your ip or domain], [your email]`
 
 ### Bot WebUI domain
 
