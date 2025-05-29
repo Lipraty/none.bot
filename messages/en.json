@@ -20,7 +20,7 @@
     ],
     "startNow": "Get Started",
     "viewDocs": "View Docs",
-    "messagesSent": "Sended Messages Now: {count}",
+    "messagesSent": "Sent of now Messages: {count}",
     "scrollDown": "Scroll Down"
   },
   "FeaturesSection": {
