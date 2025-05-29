@@ -26,7 +26,7 @@ export default function FooterSection({ isDark, onScrollTopClick }: FooterSectio
   return (
     <section
       id="contact"
-      className="relative h-screen flex items-center justify-center snap-start snap-always"
+      className="relative min-h-screen flex items-center justify-center snap-start snap-always"
     >
       <div className="container mx-auto px-4 py-12 z-10">
         <div className="text-center mb-16">

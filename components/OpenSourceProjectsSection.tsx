@@ -45,7 +45,7 @@ const OpenSourceProjectsSection = ({
   return (
     <section
       id="projects"
-      className="relative h-screen flex items-center justify-center snap-start snap-always"
+      className="relative min-h-screen flex items-center justify-center snap-start snap-always"
     >
       <div className="container mx-auto px-4 py-20 z-10">
         <div className="text-center mb-16">

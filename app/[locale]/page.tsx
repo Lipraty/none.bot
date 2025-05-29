@@ -12,6 +12,7 @@ import {
   Activity,
   Users,
   Github,
+  Menu, // Added Menu icon
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
@@ -66,6 +67,7 @@ export default function HomePage() {
   const { activeSection, assignSectionRef, scrollToSection, sectionsRef } = usePageNavigation(sectionsData.length);
 
   const [showApplyModal, setShowApplyModal] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // State for mobile menu visibility
 
   const features = [
     { icon: Zap, title: tFeatures("feature1Title"), description: tFeatures("feature1Description") },
@@ -160,7 +162,7 @@ export default function HomePage() {
     >
       {/* Fixed Header */}
       <header className="fixed top-0 left-0 right-0 z-50 px-4 py-4 backdrop-blur-md bg-opacity-70">
-        <nav className="container mx-auto flex items-center justify-between">
+        <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <div
               className={`w-10 h-10 rounded-full flex items-center justify-center ${
@@ -172,8 +174,9 @@ export default function HomePage() {
             <span className="text-2xl font-bold">{t("headerBrand")}</span>
           </div>
 
-          <div className="flex items-center space-x-6">
-            <nav className="hidden md:flex space-x-6">
+          {/* Desktop Navigation & Controls */}
+          <div className="hidden md:flex items-center space-x-6">
+            <nav className="flex space-x-6">
               {sectionsData.map((section, index) => (
                 <button
                   key={section.id}
@@ -192,11 +195,68 @@ export default function HomePage() {
             <LanguageSwitcher />
             <ThemeSwitcher theme={theme} setTheme={setTheme} />
           </div>
-        </nav>
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden flex items-center">
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label={t("toggleNavigation")}
+              className="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500 relative z-50"
+            >
+              <div className="flex flex-col justify-center items-center w-6 h-6 space-y-1.5 transition-all">
+                <span className={`block h-0.5 w-6 rounded-full bg-current transform transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
+                <span className={`block h-0.5 w-6 rounded-full bg-current transform transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'opacity-0' : ''}`}></span>
+                <span className={`block h-0.5 w-6 rounded-full bg-current transform transition-all duration-300 ease-in-out ${isMobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu Panel */}
+        <div 
+          className={`md:hidden fixed inset-0 z-40 backdrop-blur-lg transition-all duration-300 ease-in-out ${
+            isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
+        >
+          <div 
+            className={`absolute top-[4.5rem] left-0 right-0 bg-gradient-to-br from-purple-600/95 to-red-600/95 transition-all duration-500 ease-in-out transform ${
+              isMobileMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-10 opacity-0'
+            }`}
+          >
+            <nav className="flex flex-col p-4">
+              {sectionsData.map((section, index) => (
+                <button
+                  key={section.id}
+                  onClick={() => {
+                    scrollToSection(index);
+                    setIsMobileMenuOpen(false); // Close menu on item click
+                  }}
+                  className={`w-full px-6 py-4 text-left text-white text-xl font-medium rounded-lg mb-2 transition-all duration-300 backdrop-blur-sm ${
+                    activeSection === index
+                      ? 'bg-white/20 shadow-lg'
+                      : 'hover:bg-white/10'
+                  }`}
+                  style={{
+                    transitionDelay: `${index * 50}ms`,
+                    transform: isMobileMenuOpen ? 'translateX(0)' : 'translateX(-20px)',
+                    opacity: isMobileMenuOpen ? 1 : 0
+                  }}
+                >
+                  {section.name}
+                </button>
+              ))}
+            </nav>
+            <div className={`flex justify-around items-center py-4 mt-4 border-t border-white/20`}>
+              <LanguageSwitcher />
+              <ThemeSwitcher theme={theme} setTheme={setTheme} />
+            </div>
+          </div>
+        </div>
+        
       </header>
 
-      {/* Section Navigation Dots */}
-      <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-50 flex flex-col space-y-4">
+      {/* Section Navigation Dots - Potentially hide on very small screens or adjust styling */}
+      <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-50 flex-col space-y-4 hidden sm:flex">
         {sectionsData.map((section, index) => (
           <SectionDot
             key={section.id}

@@ -6,7 +6,8 @@
     "navPricing": "Pricing",
     "navProjects": "Projects",
     "navContact": "Contact",
-    "sectionDotLabel": "Scroll to {sectionName} section"
+    "sectionDotLabel": "Scroll to {sectionName} section",
+    "toggleNavigation": "Toggle Navigation"
   },
   "HeroSection": {
     "phrases": [

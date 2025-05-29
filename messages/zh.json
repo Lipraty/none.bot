@@ -6,7 +6,8 @@
     "navPricing": "价格",
     "navProjects": "项目",
     "navContact": "联系",
-    "sectionDotLabel": "滚动到 {sectionName} 部分"
+    "sectionDotLabel": "滚动到 {sectionName} 部分",
+    "toggleNavigation": "切换导航"
   },
   "HeroSection": {
     "phrases": [

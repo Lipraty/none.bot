@@ -24,7 +24,7 @@ export default function HeroSection({
   return (
     <section
       id="home"
-      className="relative h-screen flex items-center justify-center snap-start snap-always"
+      className="relative min-h-screen flex items-center justify-center snap-start snap-always"
     >
       <div className="container mx-auto px-4 text-center z-10">
         <div className="max-w-4xl mx-auto">
@@ -65,7 +65,7 @@ export default function HeroSection({
         </div>
       </div>
 
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <div className="absolute bottom-8 transform -translate-x-1/2 animate-bounce">
         <button onClick={onScrollDownClick} aria-label={t('scrollDown')}>
           <ChevronDown className="w-8 h-8 opacity-70" />
         </button>
