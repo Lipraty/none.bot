@@ -72,6 +72,22 @@ export default function HomePage() {
   const [typedText, setTypedText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
 
+  // Handle auto-switching themes
+  useEffect(() => {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    setIsDark(prefersDark);
+
+    const handleThemeChange = (e: MediaQueryListEvent) => {
+      setIsDark(e.matches);
+    };
+
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", handleThemeChange);
+
+    return () => {
+      window.matchMedia("(prefers-color-scheme: dark)").removeEventListener("change", handleThemeChange);
+    };
+  }, []);
+
   useEffect(() => {
     // Simulate real-time messages sent count
     const interval = setInterval(() => {
