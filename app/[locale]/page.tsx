@@ -1,16 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { Switch } from "@/components/ui/switch";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
 import {
-  Sun,
-  Moon,
-  ArrowRight,
-  ChevronDown,
   Zap,
   Clock,
   CreditCard,
@@ -21,9 +12,8 @@ import {
   Activity,
   Users,
   Github,
-  Check,
-  ExternalLink,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 // Hooks
 import { useTheme } from "@/hooks/useTheme";
@@ -40,89 +30,124 @@ import PricingSection from "@/components/PricingSection";
 import OpenSourceProjectsSection from "@/components/OpenSourceProjectsSection";
 import FooterSection from "@/components/FooterSection";
 import ApplySubdomainModal from "@/components/ApplySubdomainModal";
-
-const phrases = [
-  "下一代 ChatBot 服务平台",
-  "快速、稳定、可扩展",
-  "支持多种语言和框架",
-  "加入我们，构建您的智能助手",
-];
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 const TYPING_SPEED = 100;
 const DELETING_SPEED = 50;
 const PAUSE_DURATION = 1500;
 
-const sectionsData = [
-  { id: "home", name: "Home" },
-  { id: "features", name: "Features" },
-  { id: "pricing", name: "Pricing" },
-  { id: "projects", name: "Projects" },
-  { id: "contact", name: "Contact" },
-];
-
 export default function HomePage() {
+  const t = useTranslations("HomePage");
+  const tHero = useTranslations("HeroSection");
+  const tFeatures = useTranslations("FeaturesSection");
+  const tPricing = useTranslations("PricingSection");
+  const tOpenSource = useTranslations("OpenSourceProjectsSection");
+
+  const sectionsData = [
+    { id: "home", name: t("navHome") },
+    { id: "features", name: t("navFeatures") },
+    { id: "pricing", name: t("navPricing") },
+    { id: "projects", name: t("navProjects") },
+    { id: "contact", name: t("navContact") },
+  ];
+
   const { theme, setTheme, isDark } = useTheme();
   const messagesSent = useMessageCounter();
-  const typedText = useTypewriter(phrases, TYPING_SPEED, DELETING_SPEED, PAUSE_DURATION);
+
+  // 从翻译文件中获取 phrases
+  const heroPhrases = [
+    tHero("phrases.0"),
+    tHero("phrases.1"),
+    tHero("phrases.2"),
+    tHero("phrases.3"),
+    tHero("phrases.4"),
+  ];
+  const typedText = useTypewriter(heroPhrases, TYPING_SPEED, DELETING_SPEED, PAUSE_DURATION);
   const { activeSection, assignSectionRef, scrollToSection, sectionsRef } = usePageNavigation(sectionsData.length);
 
   const [showApplyModal, setShowApplyModal] = useState(false);
 
   const features = [
-    { icon: Zap, title: "一键启动", description: "零配置快速部署，几秒钟内启动您的ChatBot" },
-    { icon: Clock, title: "快速响应", description: "毫秒级响应时间，提供流畅的用户体验" },
-    { icon: CreditCard, title: "按需订阅", description: "灵活的订阅模式，只为您使用的功能付费" },
-    { icon: Download, title: "免费更新", description: "持续的功能更新和安全补丁，完全免费" },
+    { icon: Zap, title: tFeatures("feature1Title"), description: tFeatures("feature1Description") },
+    { icon: Clock, title: tFeatures("feature2Title"), description: tFeatures("feature2Description") },
+    { icon: CreditCard, title: tFeatures("feature3Title"), description: tFeatures("feature3Description") },
+    { icon: Download, title: tFeatures("feature4Title"), description: tFeatures("feature4Description") },
   ];
 
   const functions = [
-    { icon: Globe, title: "多语言架构", description: "支持多种编程语言和框架集成" },
-    { icon: Puzzle, title: "插件系统", description: "丰富的插件生态，轻松扩展功能" },
-    { icon: Layers, title: "多平台聚合", description: "统一管理多个聊天平台的机器人" },
-    { icon: Activity, title: "事件驱动", description: "高效的事件处理机制，响应迅速" },
-    { icon: Users, title: "活跃社区", description: "庞大的开发者社区，丰富的资源支持" },
-    { icon: Github, title: "开源版本", description: "完全开源，透明可信，自由定制" },
+    { icon: Globe, title: tFeatures("function1Title"), description: tFeatures("function1Description") },
+    { icon: Puzzle, title: tFeatures("function2Title"), description: tFeatures("function2Description") },
+    { icon: Layers, title: tFeatures("function3Title"), description: tFeatures("function3Description") },
+    { icon: Activity, title: tFeatures("function4Title"), description: tFeatures("function4Description") },
+    { icon: Users, title: tFeatures("function5Title"), description: tFeatures("function5Description") },
+    { icon: Github, title: tFeatures("function6Title"), description: tFeatures("function6Description") },
   ];
 
   const pricingPlans = [
     {
-      name: "开源版",
-      price: "¥0",
-      period: "/Year",
-      description: "适合个人开发者",
-      features: ["无限机器人", "社区支持", "社区插件"],
+      name: tPricing("planOpenSourceTitle"),
+      price: tPricing("planOpenSourcePrice"),
+      period: tPricing("planOpenSourcePeriod"),
+      description: tPricing("planOpenSourceDescription"),
+      features: [
+        tPricing("planOpenSourceFeature1"),
+        tPricing("planOpenSourceFeature2"),
+        tPricing("planOpenSourceFeature3"),
+      ],
       popular: false,
     },
     {
-      name: "基础版",
-      price: "¥1145",
-      period: "/Year",
-      description: "适合小型团队和初创公司",
-      features: ["最多 10 个机器人", "全部插件支持", "邮件支持", "每月 10000 次API调用", "自定义域名"],
+      name: tPricing("planBasicTitle"),
+      price: tPricing("planBasicPrice"),
+      period: tPricing("planBasicPeriod"),
+      description: tPricing("planBasicDescription"),
+      features: [
+        tPricing("planBasicFeature1"),
+        tPricing("planBasicFeature2"),
+        tPricing("planBasicFeature3"),
+        tPricing("planBasicFeature4"),
+        tPricing("planBasicFeature5"),
+      ],
       popular: false,
     },
     {
-      name: "专业版",
-      price: "¥5141",
-      period: "/Year",
-      description: "适合成长中的企业",
-      features: ["基础版的全部功能", "无限机器人", "高级分析", "优先支持", "无限API调用", "白标解决方案", "高优先级调用"],
+      name: tPricing("planProTitle"),
+      price: tPricing("planProPrice"),
+      period: tPricing("planProPeriod"),
+      description: tPricing("planProDescription"),
+      features: [
+        tPricing("planProFeature1"),
+        tPricing("planProFeature2"),
+        tPricing("planProFeature3"),
+        tPricing("planProFeature4"),
+        tPricing("planProFeature5"),
+        tPricing("planProFeature6"),
+        tPricing("planProFeature7"),
+      ],
       popular: true,
     },
     {
-      name: "集群版",
-      price: "¥19999",
-      period: "/Year",
-      description: "适合大型企业和高并发场景",
-      features: ["专业版的全部功能", "企业级集群", "专属客户经理", "24/7技术支持", "定制开发", "SLA保证", "私有部署"],
+      name: tPricing("planClusterTitle"),
+      price: tPricing("planClusterPrice"),
+      period: tPricing("planClusterPeriod"),
+      description: tPricing("planClusterDescription"),
+      features: [
+        tPricing("planClusterFeature1"),
+        tPricing("planClusterFeature2"),
+        tPricing("planClusterFeature3"),
+        tPricing("planClusterFeature4"),
+        tPricing("planClusterFeature5"),
+        tPricing("planClusterFeature6"),
+        tPricing("planClusterFeature7"),
+      ],
       popular: false,
     },
   ];
 
   const openSourceProjects = [
-    { name: "NoneBot", description: "现代化的 Python 异步机器人框架", url: "https://github.com/nonebot/nonebot2" },
-    { name: "Koishi", description: "跨平台聊天机器人框架", url: "https://github.com/koishijs/koishi" },
-    { name: "Mirai", description: "QQ机器人框架", url: "https://github.com/mamoe/mirai" },
+    { name: tOpenSource("projectNoneBotName"), description: tOpenSource("projectNoneBotDescription"), url: "https://github.com/nonebot/nonebot2" },
+    { name: tOpenSource("projectKoishiName"), description: tOpenSource("projectKoishiDescription"), url: "https://github.com/koishijs/koishi" },
+    { name: tOpenSource("projectMiraiName"), description: tOpenSource("projectMiraiDescription"), url: "https://github.com/mamoe/mirai" },
   ];
 
   return (
@@ -144,7 +169,7 @@ export default function HomePage() {
             >
               {/* Placeholder for logo icon */}
             </div>
-            <span className="text-2xl font-bold">None.Bot</span>
+            <span className="text-2xl font-bold">{t("headerBrand")}</span>
           </div>
 
           <div className="flex items-center space-x-6">
@@ -157,13 +182,14 @@ export default function HomePage() {
                     activeSection === index ? "text-purple-600" : ""
                   }`}
                 >
-                  {section.name.charAt(0).toUpperCase() + section.name.slice(1)}
+                  {section.name}
                   {activeSection === index && (
                     <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-purple-600 animate-pulse"></span>
                   )}
                 </button>
               ))}
             </nav>
+            <LanguageSwitcher />
             <ThemeSwitcher theme={theme} setTheme={setTheme} />
           </div>
         </nav>
@@ -177,7 +203,7 @@ export default function HomePage() {
             isActive={activeSection === index}
             isDark={isDark}
             onClick={() => scrollToSection(index)}
-            label={`Scroll to ${section.name} section`}
+            label={t("sectionDotLabel", { sectionName: section.name })}
           />
         ))}
       </div>
@@ -199,44 +225,31 @@ export default function HomePage() {
 
       <div ref={assignSectionRef(0)}>
         <HeroSection
-          typedText={typedText}
-          messagesSent={messagesSent}
-          isDark={isDark}
-          onStartClick={() => setShowApplyModal(true)}
-          onDocsClick={() => window.open("https://koishi.chat", "_blank")}
-          onScrollDownClick={() => scrollToSection(1)}
+          {...{ typedText, messagesSent, isDark, onStartClick: () => setShowApplyModal(true), onDocsClick: () => window.open("https://koishi.chat"), onScrollDownClick: () => scrollToSection(1) }}
         />
       </div>
 
       <div ref={assignSectionRef(1)}>
         <FeaturesSection
-          features={features}
-          functions={functions}
-          isDark={isDark}
-          onScrollDownClick={() => scrollToSection(2)}
+          {...{ features, functions, isDark, onScrollDownClick: () => scrollToSection(2) }}
         />
       </div>
 
       <div ref={assignSectionRef(2)}>
         <PricingSection
-          pricingPlans={pricingPlans}
-          isDark={isDark}
-          onScrollDownClick={() => scrollToSection(3)}
+          {...{ pricingPlans, isDark, onScrollDownClick: () => scrollToSection(3) }}
         />
       </div>
 
       <div ref={assignSectionRef(3)}>
         <OpenSourceProjectsSection
-          projects={openSourceProjects}
-          isDark={isDark}
-          onScrollDownClick={() => scrollToSection(4)}
+          {...{ projects: openSourceProjects, isDark, onScrollDownClick: () => scrollToSection(4) }}
         />
       </div>
 
       <div ref={assignSectionRef(4)}>
         <FooterSection
-          isDark={isDark}
-          onScrollTopClick={() => scrollToSection(0)}
+          {...{ isDark, onScrollTopClick: () => scrollToSection(0) }}
         />
       </div>
 

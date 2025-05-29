@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ChevronDown } from "lucide-react";
+import { useTranslations } from 'next-intl';
 
 interface HeroSectionProps {
   typedText: string;
@@ -18,6 +19,8 @@ export default function HeroSection({
   onDocsClick,
   onScrollDownClick,
 }: HeroSectionProps) {
+  const t = useTranslations('HeroSection');
+
   return (
     <section
       id="home"
@@ -39,7 +42,7 @@ export default function HeroSection({
             } hover:scale-105 transition-transform duration-300`}
           >
             <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-            <span className="font-semibold">当前发送消息数: {messagesSent.toLocaleString()}</span>
+            <span className="font-semibold">{t('messagesSent', { count: messagesSent.toLocaleString() })}</span>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -48,7 +51,7 @@ export default function HeroSection({
               className="bg-gradient-to-r from-purple-600 to-red-600 hover:from-purple-700 hover:to-red-700 text-white transform hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/30"
               onClick={onStartClick}
             >
-              立即开始 <ArrowRight className="ml-2 w-4 h-4" />
+              {t('startNow')} <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
             <Button
               size="lg"
@@ -56,14 +59,14 @@ export default function HeroSection({
               className="border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white transform hover:scale-105 transition-all duration-300"
               onClick={onDocsClick}
             >
-              查看文档
+              {t('viewDocs')}
             </Button>
           </div>
         </div>
       </div>
 
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <button onClick={onScrollDownClick} aria-label="Scroll to features">
+        <button onClick={onScrollDownClick} aria-label={t('scrollDown')}>
           <ChevronDown className="w-8 h-8 opacity-70" />
         </button>
       </div>

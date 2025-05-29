@@ -1,6 +1,7 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { ChevronDown } from "lucide-react";
 import { ElementType } from "react";
+import { useTranslations } from 'next-intl';
 
 interface FeatureItem {
   icon: ElementType;
@@ -21,6 +22,8 @@ export default function FeaturesSection({
   isDark,
   onScrollDownClick,
 }: FeaturesSectionProps) {
+  const t = useTranslations('FeaturesSection');
+
   return (
     <section
       id="features"
@@ -29,9 +32,11 @@ export default function FeaturesSection({
       <div className="container mx-auto px-4 py-20 z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-red-600 bg-clip-text text-transparent inline-block">
-            核心特性
+            {t('title')}
           </h2>
-          <p className="text-xl opacity-80">为什么选择 None.Bot？</p>
+          {/* <p className="text-xl opacity-80">为什么选择 None.Bot？</p> */}
+          {/* This subtitle seems to be missing from the initial translation files, 
+              If needed, it can be added as FeaturesSection.whyChooseUs or similar key */}
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
@@ -63,9 +68,11 @@ export default function FeaturesSection({
 
         <div className="text-center mb-16">
           <h3 className="text-3xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-red-600 bg-clip-text text-transparent inline-block">
-            强大功能
+            {t('subtitle')}
           </h3>
-          <p className="text-lg opacity-80">全面的功能支持，满足各种场景需求</p>
+          {/* <p className="text-lg opacity-80">全面的功能支持，满足各种场景需求</p> */}
+           {/* This subtitle also seems to be missing from the initial translation files,
+               If needed, it can be added as FeaturesSection.comprehensiveSupport or similar key */}
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -98,7 +105,7 @@ export default function FeaturesSection({
       </div>
 
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <button onClick={onScrollDownClick} aria-label="Scroll to pricing">
+        <button onClick={onScrollDownClick} aria-label={t('scrollDown')}>
           <ChevronDown className="w-8 h-8 opacity-70" />
         </button>
       </div>

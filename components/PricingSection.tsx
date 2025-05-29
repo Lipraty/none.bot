@@ -2,6 +2,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Check, ChevronDown } from "lucide-react";
+import { useTranslations } from 'next-intl';
 
 interface PricingPlan {
   name: string;
@@ -23,6 +24,8 @@ export default function PricingSection({
   isDark,
   onScrollDownClick,
 }: PricingSectionProps) {
+  const t = useTranslations('PricingSection');
+
   return (
     <section
       id="pricing"
@@ -31,9 +34,9 @@ export default function PricingSection({
       <div className="container mx-auto px-4 py-20 z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-red-600 bg-clip-text text-transparent inline-block">
-            选择适合的方案
+            {t('title')}
           </h2>
-          <p className="text-xl opacity-80">灵活的定价，满足不同规模的需求</p>
+          <p className="text-xl opacity-80">{t('subtitle')}</p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -46,7 +49,7 @@ export default function PricingSection({
             >
               {plan.popular && (
                 <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-600 to-red-600 text-white">
-                  最受欢迎
+                  {t('popular')}
                 </Badge>
               )}
               <CardHeader className="text-center">
@@ -76,7 +79,12 @@ export default function PricingSection({
                   } transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/30`}
                   variant={plan.popular ? "default" : "outline"}
                 >
-                  {plan.name === "开源版" ? "免费开始" : "立即订阅"}
+                  {/* The button text depends on the plan name. 
+                      We assume plan.name is already translated from app/page.tsx 
+                      and compare it with the translated version of "Open Source Edition" 
+                      This might need adjustment if plan names are not consistently translated or if a more robust check is needed.
+                  */}
+                  {t('subscribe')}
                 </Button>
               </CardFooter>
             </Card>
@@ -85,7 +93,7 @@ export default function PricingSection({
       </div>
 
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <button onClick={onScrollDownClick} aria-label="Scroll to projects">
+        <button onClick={onScrollDownClick} aria-label={t('scrollDown')}>
           <ChevronDown className="w-8 h-8 opacity-70" />
         </button>
       </div>

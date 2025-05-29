@@ -1,24 +1,47 @@
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Github, ChevronDown } from "lucide-react";
+import { useTranslations } from 'next-intl';
 
-interface OpenSourceProject {
-  name: string;
-  description: string;
+interface OpenSourceProjectFromData {
+  nameKey: string;
+  descriptionKey: string;
   url: string;
 }
 
 interface OpenSourceProjectsSectionProps {
-  projects: OpenSourceProject[];
-  isDark: boolean;
   onScrollDownClick: () => void;
 }
 
-export default function OpenSourceProjectsSection({
-  projects,
-  isDark,
+const OpenSourceProjectsSection = ({
   onScrollDownClick,
-}: OpenSourceProjectsSectionProps) {
+}: OpenSourceProjectsSectionProps) => {
+  const t = useTranslations('OpenSourceProjectsSection');
+
+  const projectData: OpenSourceProjectFromData[] = [
+    {
+      nameKey: 'projectNoneBotName',
+      descriptionKey: 'projectNoneBotDescription',
+      url: 'https://nonebot.dev/',
+    },
+    {
+      nameKey: 'projectKoishiName',
+      descriptionKey: 'projectKoishiDescription',
+      url: 'https://koishi.chat/',
+    },
+    {
+      nameKey: 'projectMiraiName',
+      descriptionKey: 'projectMiraiDescription',
+      url: 'https://github.com/mamoe/mirai',
+    },
+  ];
+
+  const projects = projectData.map(p => ({
+    name: t(p.nameKey),
+    description: t(p.descriptionKey),
+    url: p.url,
+  }));
+
   return (
     <section
       id="projects"
@@ -27,20 +50,15 @@ export default function OpenSourceProjectsSection({
       <div className="container mx-auto px-4 py-20 z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-red-600 bg-clip-text text-transparent inline-block">
-            开源项目导航
+            {t('title')}
           </h2>
-          <p className="text-xl opacity-80">探索优秀的开源 ChatBot 项目</p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project, index) => (
             <Card
               key={index}
-              className={`border-0 transition-all duration-300 cursor-pointer ${
-                isDark
-                  ? "bg-white/10 backdrop-blur-sm hover:bg-white/20"
-                  : "bg-white/70 backdrop-blur-sm hover:bg-white/90"
-              } hover:shadow-xl hover:shadow-purple-500/20 hover:scale-105 hover:-rotate-1`}
+              className={`border-0 transition-all duration-300 cursor-pointer bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:shadow-xl hover:shadow-purple-500/20 hover:scale-105 hover:-rotate-1`}
             >
               <CardHeader>
                 <div className="flex items-center justify-between">
@@ -59,7 +77,7 @@ export default function OpenSourceProjectsSection({
                   onClick={() => window.open(project.url, "_blank")}
                 >
                   <Github className="w-4 h-4 mr-2" />
-                  查看项目
+                  {t('learnMore')}
                 </Button>
               </CardFooter>
             </Card>
@@ -68,10 +86,12 @@ export default function OpenSourceProjectsSection({
       </div>
 
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <button onClick={onScrollDownClick} aria-label="Scroll to contact">
+        <button onClick={onScrollDownClick} aria-label={t('scrollDown')}>
           <ChevronDown className="w-8 h-8 opacity-70" />
         </button>
       </div>
     </section>
   );
-}
+};
+
+export default OpenSourceProjectsSection;

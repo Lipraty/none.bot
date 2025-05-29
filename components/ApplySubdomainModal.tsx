@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { useApplySubdomainForm } from "@/hooks/useApplySubdomainForm";
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 interface ApplySubdomainModalProps {
   isOpen: boolean;
@@ -13,6 +14,9 @@ interface ApplySubdomainModalProps {
 }
 
 export default function ApplySubdomainModal({ isOpen, onClose }: ApplySubdomainModalProps) {
+  const t = useTranslations('ApplySubdomainModal');
+  const tFooter = useTranslations('FooterSection'); // For "Terms of Service"
+
   const {
     subdomain,
     setSubdomain,
@@ -45,52 +49,52 @@ export default function ApplySubdomainModal({ isOpen, onClose }: ApplySubdomainM
     <Dialog open={isOpen} onOpenChange={handleModalOpenChange}>
       <DialogContent className="sm:max-w-[525px] allow-scroll">
         <DialogHeader>
-          <DialogTitle>认真你就输啦，但是你可以免费申请一个子域名。</DialogTitle>
+          <DialogTitle>{t('title')}</DialogTitle>
           <DialogDescription>
             <ul className="pl-5 space-y-2">
-              <li>子域名只能包含字母、数字和连字符。</li>
-              <li>子域名必须是唯一的，不能与已有的子域名冲突。</li>
-              <li>子域名解析服务仅提供 A、AAAA、CNAME 记录解析。</li>
-              <li>子域名所指向内容必须是开源聊天机器人框架相关项目有关联的生态的页面、API等。</li>
-              <li>子域名不得与官方保留字、官方插件和非私域市场插件同名。</li>
-              <li>该域名未进行 IPC 备案，不保证解析到中国大陆境内的服务商 IP 地址时可能的阻断。</li>
+              <li>{t('rule1')}</li>
+              <li>{t('rule2')}</li>
+              <li>{t('rule3')}</li>
+              <li>{t('rule4')}</li>
+              <li>{t('rule5')}</li>
+              <li>{t('rule6')}</li>
             </ul>
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="subdomain">子域名</Label>
+            <Label htmlFor="subdomain">{t('subdomainLabel')}</Label>
             <div className="flex items-center">
               <Input
                 id="subdomain"
-                placeholder="yourname"
+                placeholder={t('subdomainPlaceholder')}
                 value={subdomain}
                 onChange={(e) => setSubdomain(e.target.value)}
                 className="rounded-r-none"
               />
               <span className="px-3 py-2 bg-gray-100 border border-l-0 rounded-r-md text-gray-600 dark:bg-gray-700 dark:text-gray-400 dark:border-gray-600">
-                .none.bot
+                {t('subdomainSuffix')}
               </span>
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="recordType">解析方式</Label>
+            <Label htmlFor="recordType">{t('recordTypeLabel')}</Label>
             <Select value={recordType} onValueChange={setRecordType}>
               <SelectTrigger id="recordType">
-                <SelectValue placeholder="选择解析方式" />
+                <SelectValue placeholder={t('recordTypePlaceholder')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="A">A (地址记录)</SelectItem>
-                <SelectItem value="AAAA">AAAA (IPv6 地址记录)</SelectItem>
-                <SelectItem value="CNAME">CNAME (别名记录)</SelectItem>
+                <SelectItem value="A">{t('recordTypeA')}</SelectItem>
+                <SelectItem value="AAAA">{t('recordTypeAAAA')}</SelectItem>
+                <SelectItem value="CNAME">{t('recordTypeCNAME')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="pointsTo">指向 (IP地址/域名)</Label>
+            <Label htmlFor="pointsTo">{t('pointsToLabel')}</Label>
             <Input
               id="pointsTo"
-              placeholder="例如: 192.168.1.1 或 example.com"
+              placeholder={t('pointsToPlaceholder')}
               value={pointsTo}
               onChange={(e) => setPointsTo(e.target.value)}
             />
@@ -102,19 +106,19 @@ export default function ApplySubdomainModal({ isOpen, onClose }: ApplySubdomainM
               onCheckedChange={(checked) => setAgreeToTerms(Boolean(checked))}
             />
             <Label htmlFor="terms" className="text-sm font-normal">
-              我已阅读并同意
+              {t('agreeToTermsLabelPart1')}
               <Link href="/termsofservice" passHref legacyBehavior>
                 <a target="_blank" rel="noopener noreferrer" className="underline hover:text-purple-600">
-                  服务条款
+                  {tFooter('termsOfService')}
                 </a>
               </Link>
             </Label>
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={onClose}>算了</Button>
+          <Button variant="outline" onClick={onClose}>{t('closeButton')}</Button>
           <Button onClick={handleFormSubmit} disabled={!agreeToTerms || !subdomain || !pointsTo}>
-            申请一个！
+            {t('submitButton')}
           </Button>
         </DialogFooter>
       </DialogContent>

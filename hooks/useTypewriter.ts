@@ -1,8 +1,14 @@
 import { useState, useEffect } from 'react';
 
-const DEFAULT_TYPING_SPEED = 100;
-const DEFAULT_DELETING_SPEED = 50;
+const DEFAULT_TYPING_SPEED = 100; // Represents max delay for a single char
+const DEFAULT_DELETING_SPEED = 50; // Represents max delay for a single char
 const DEFAULT_PAUSE_DURATION = 1500;
+
+// New constants for dynamic speed calculation
+const TARGET_PHRASE_TYPING_DURATION = 2000; // ms
+const TARGET_PHRASE_DELETING_DURATION = 1000; // ms
+const MIN_CHAR_TYPING_DELAY = 30; // ms, fastest speed for typing a char
+const MIN_CHAR_DELETING_DELAY = 20; // ms, fastest speed for deleting a char
 
 export function useTypewriter(
   phrases: string[],
@@ -21,23 +27,41 @@ export function useTypewriter(
     }
 
     let timer: NodeJS.Timeout;
-    const currentPhrase = phrases[phraseIndex % phrases.length]; // Ensure phraseIndex is always valid
+    const currentPhrase = phrases[phraseIndex];
+
+    const L = currentPhrase ? currentPhrase.length : 0;
+    let actualTypingDelay = typingSpeed; 
+    let actualDeletingDelay = deletingSpeed;
+
+    if (L > 0) {
+      const calculatedTypingDelay = TARGET_PHRASE_TYPING_DURATION / L;
+      actualTypingDelay = Math.max(MIN_CHAR_TYPING_DELAY, Math.min(typingSpeed, calculatedTypingDelay));
+
+      const calculatedDeletingDelay = TARGET_PHRASE_DELETING_DURATION / L;
+      actualDeletingDelay = Math.max(MIN_CHAR_DELETING_DELAY, Math.min(deletingSpeed, calculatedDeletingDelay));
+    }
 
     if (isDeleting) {
+      // Handle deleting
       if (typedText.length > 0) {
         timer = setTimeout(() => {
-          setTypedText(currentPhrase.substring(0, typedText.length - 1));
-        }, deletingSpeed);
+          // Ensure currentPhrase is defined before calling substring
+          setTypedText(currentPhrase ? currentPhrase.substring(0, typedText.length - 1) : "");
+        }, actualDeletingDelay); // Use calculated deleting delay
       } else {
+        // Finished deleting
         setIsDeleting(false);
-        setPhraseIndex((prevIndex) => (prevIndex + 1)); // No modulo here, let it grow
+        setPhraseIndex((prevIndex) => (prevIndex + 1) % phrases.length);
       }
     } else {
-      if (typedText.length < currentPhrase.length) {
+      // Handle typing
+      // Ensure currentPhrase is defined before calling substring or checking length
+      if (currentPhrase && typedText.length < currentPhrase.length) {
         timer = setTimeout(() => {
           setTypedText(currentPhrase.substring(0, typedText.length + 1));
-        }, typingSpeed);
+        }, actualTypingDelay); // Use calculated typing delay
       } else {
+        // Finished typing, pause then start deleting
         timer = setTimeout(() => {
           setIsDeleting(true);
         }, pauseDuration);
@@ -45,14 +69,7 @@ export function useTypewriter(
     }
 
     return () => clearTimeout(timer);
-  }, [typedText, isDeleting, phraseIndex, phrases, typingSpeed, deletingSpeed, pauseDuration]);
-
-  // Reset if phrases array changes to avoid issues with out-of-bounds index
-  useEffect(() => {
-    setPhraseIndex(0);
-    setTypedText("");
-    setIsDeleting(false);
-  }, [phrases]);
+  }, [typedText, isDeleting, phraseIndex, phrases, typingSpeed, deletingSpeed, pauseDuration]); // Keep extended dependencies for now, but applied core logic from old version
 
   return typedText;
 }
